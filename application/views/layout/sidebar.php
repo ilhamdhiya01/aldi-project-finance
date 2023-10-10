@@ -11,10 +11,10 @@
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
       <div class="image">
-        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        <img src="<?= base_url() ?>dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
+        <a href="#" class="d-block"><?= $this->session->userdata('name'); ?></a>
       </div>
     </div>
 
@@ -25,7 +25,7 @@
         <!-- <li class="nav-item menu-open"> -->
         <li class="nav-item">
           <a href="<?= base_url()?>/dashboard" class="nav-link">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon fas fa-chart-line"></i>
             <p>
               Dashboard
               <!-- <span class="right badge badge-danger">New</span> -->
@@ -34,10 +34,10 @@
         </li>
         <li class="nav-header">FINANCE</li>
         <li class="nav-item">
-          <a href="#" class="nav-link active">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-money-check"></i>
             <p>
-              Transaction
+              Transaksi
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -45,22 +45,108 @@
             <li class="nav-item">
               <a href="./index.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v1</p>
+                <p>Pembelian</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="./index2.html" class="nav-link active">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v2</p>
+                <p>Penyewaan</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="./index3.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Dashboard v3</p>
+                <p>Pengiriman</p>
               </a>
             </li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-money-check"></i>
+            <p>
+              Keuangan
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="./index.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pemasukan</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./index2.html" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Pengeluaran</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="<?= base_url()?>/dashboard" class="nav-link">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <p>
+              Pencatatan Utang
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="<?= base_url()?>/dashboard" class="nav-link">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <p>
+              Pencatatan Piutang
+            </p>
+          </a>
+        </li>
+        <li class="nav-header">MASTER</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-tasks"></i>
+            <p>
+              Master Data
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="./index.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Managemen Vendor</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./index2.html" class="nav-link active">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Managemen Kendaraan</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="./index3.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Managemen Pengiriman</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-header">SETTINGS</li>
+        <li class="nav-item">
+          <a href="<?= base_url()?>/dashboard" class="nav-link">
+            <i class="nav-icon fas fa-users-cog"></i>
+            <p>
+              Konfigurasi User
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="<?= base_url()?>authentication/logoutProcess" class="nav-link">
+            <i class="nav-icon fas fa-power-off"></i>
+            <p>
+              Log Out
+            </p>
+          </a>
         </li>
       </ul>
     </nav>
