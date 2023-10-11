@@ -68,7 +68,7 @@
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
     $.ajax({
-      url: '<?= base_url() ?>authentication/loginProcess',
+      url: '<?= base_url('login/loginProcess') ?>',
       type: 'POST',
       data: {
         username: $('#username').val(),
@@ -85,7 +85,7 @@
         if(loginStatus) {
           toastr.success(message);
           setTimeout(() => {
-            window.location.href = '<?= base_url() ?>dashboard';
+            window.location.href = '<?= base_url('dashboard') ?>';
           }, 2500);
         }
       }

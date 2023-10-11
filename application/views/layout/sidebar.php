@@ -133,7 +133,7 @@
         </li>
         <li class="nav-header">SETTINGS</li>
         <li class="nav-item">
-          <a href="<?= base_url()?>/dashboard" class="nav-link">
+          <a href="<?= base_url('userconfiguration')?>" class="nav-link">
             <i class="nav-icon fas fa-users-cog"></i>
             <p>
               Konfigurasi User
@@ -141,7 +141,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url()?>authentication/logoutProcess" class="nav-link">
+          <a href="<?= base_url('logout')?>" class="nav-link">
             <i class="nav-icon fas fa-power-off"></i>
             <p>
               Log Out
