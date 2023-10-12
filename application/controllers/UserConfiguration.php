@@ -57,21 +57,64 @@ class UserConfiguration extends CI_Controller {
     }
   }
 
+  public function updateUser()
+  {
+    try {
+      $user = $this->Authentication_model->checkUser($_POST['username']);
+      $inputValidation = [
+        'uniqueUsername' => $this->validateUniqueEmail($_POST['username'])
+      ];
+      if(is_null($inputValidation['uniqueUsername'])) {
+        $response = $this->UserConfiguration_model->update($user);
+        echo json_encode($response);
+      } else {
+        echo json_encode($inputValidation);
+      }
+    } catch (\Throwable $th) {
+      throw new Exception($th);
+    }
+  }
+
+  public function userDetail()
+  {
+    try {
+      $username = $_GET['username'];
+      $response = $this->UserConfiguration_model->detail($username);
+      echo json_encode($response);
+    } catch (\Throwable $th) {
+      throw new Exception($th);
+    }
+  }
+
+  public function deleteUser()
+  {
+    try {
+      $username = $_GET['username'];
+      $response = $this->UserConfiguration_model->destroy($username);
+      echo json_encode($response);
+    } catch (\Throwable $th) {
+      throw new Exception($th);
+    }
+  }
+
+  
+
   public function validateInputRequired($request) {
     if(strlen($request['name']) == 0){
-      return ['name' => 'Name must be filled in'];
+      // return ['name' => 'Name must be filled in'];
+      return ['name' => 'name','message' => 'Name must be filled in'];
     }
     if(strlen($request['username']) == 0){
-      return ['username' => 'Username must be filled in'];
+      return ['name' => 'username','message' => 'Username must be filled in'];
     }
     if(strlen($request['password']) == 0){
-      return ['password' => 'Password must be filled in'];
+      return ['name' => 'password','message' => 'Password must be filled in'];
     }
     if(strlen($request['role']) == 0){
-      return ['role' => 'Role must be filled in'];
+      return ['name' => 'role','message' => 'Role must be filled in'];
     }
     if(strlen($request['status']) == 0){
-      return ['status' => 'Status must be filled in'];
+      return ['name' => 'status','message' => 'Status must be filled in'];
     }
   }
 
