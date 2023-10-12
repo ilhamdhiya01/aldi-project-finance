@@ -26,7 +26,7 @@
             <div class="card-body p-0">
               <div class="table-responsive p-3">
                 <div class="d-flex justify-content-end mb-3">
-                  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Tambah User</button>
+                  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalAddUser">Tambah User</button>
                 </div>
                 <div id="listUser">
                 </div>
@@ -39,4 +39,5 @@
   </section>
 </div>
 <?php require('components/formAddUser.php'); ?>
+<?php require('components/formUpdateUser.php'); ?>
 <?php require('js/userConfiguration.php'); ?>

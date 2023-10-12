@@ -36,15 +36,44 @@ class UserConfiguration_model extends CI_Model
       $role = $request['role'];
       $createDt = date('YmdHis');
 
-      // $query = "insert into users (name, username, password, status, roleId, createDt) values ('$name', '$username', '$password', '$status', '$role', '$createDt')";
-      // $response = $this->db->query($query);
-      // if($response) {
-      // }
-      return [
-        'code' => 200,
-        'status' => 'success',
-        'message' => 'Create user has been successfully'
-      ];
+      $query = "insert into users (name, username, password, status, roleId, createDt) values ('$name', '$username', '$password', '$status', '$role', '$createDt')";
+      $response = $this->db->query($query);
+      if($response) {
+        return [
+          'code' => 200,
+          'status' => 'success',
+          'message' => 'Create user has been successfully'
+        ];
+      }
     }
 
+    public function detail($username)
+    {
+      $query = "select name, username, status, roleId from users where username = '$username'";
+      $data = $this->db->query($query);
+      return $data->row_array();
+    }
+
+    public function destroy($username) 
+    {
+      $query = "delete from users where username = '$username'";
+      $response = $this->db->query($query);
+      if($response) {
+        return [
+          'status' => 'success',
+          'message' => $username . ' has been deleted'
+        ];
+      }
+    }
+
+    public function update($user) 
+    {
+      $name = $_POST['name'];
+      $username = $_POST['username'];
+      $status = $_POST['status'];
+      $role = $_POST['role'];
+      $updateDt = date('YmdHis');
+
+      return $username;
+    }
 }

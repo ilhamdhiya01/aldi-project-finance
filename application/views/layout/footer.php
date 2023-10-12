@@ -33,6 +33,8 @@
 
 <!-- AdminLTE for demo purposes -->
 <script src="<?= base_url() ?>dist/js/demo.js"></script>
+<!-- toastr -->
+<script src="<?= base_url() ?>plugins/toastr/toastr.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?= base_url() ?>dist/js/pages/dashboard2.js"></script>
 </body>
