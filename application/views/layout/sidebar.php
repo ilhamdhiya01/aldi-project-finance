@@ -112,21 +112,21 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./index.html" class="nav-link">
+              <a href="<?= base_url('vendorManagement') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Managemen Vendor</p>
+                <p>Management Vendor</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./index2.html" class="nav-link active">
+              <a href="./index2.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Managemen Kendaraan</p>
+                <p>Management Kendaraan</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="./index3.html" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Managemen Pengiriman</p>
+                <p>Management Pengiriman</p>
               </a>
             </li>
           </ul>

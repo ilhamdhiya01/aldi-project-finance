@@ -23,7 +23,11 @@ class UserConfiguration_model extends CI_Model
       $query = "select a.name, a.username, b.optStatus as userStatus, c.optStatus as roleUser
           from  users a
           inner join tbloption b on b.optDesc = 'UserStatus' and a.status = b.optCode
-          inner join tbloption c on c.optDesc = 'RoleUser' and a.roleId = c.optCode";
+          inner join tbloption c on c.optDesc = 'RoleUser' and a.roleId = c.optCode ";
+      if($this->session->userdata('roleUser') == 'Admin') {
+        $username = $this->session->userdata('username');
+        $query .=  "where username = '$username'";
+      } 
       $data = $this->db->query($query);
       return $data->result_array();
     }
@@ -66,14 +70,39 @@ class UserConfiguration_model extends CI_Model
       }
     }
 
-    public function update($user) 
+    public function update() 
     {
       $name = $_POST['name'];
       $username = $_POST['username'];
+      $usernameSession = $this->session->userdata('username');
+      $userStatusSession = $this->session->userdata('userStatus') == 'Active' ? '01' : '02';
+      $currentUsername = $_POST['currentUsername'];
       $status = $_POST['status'];
       $role = $_POST['role'];
       $updateDt = date('YmdHis');
 
-      return $username;
+      $query = "update users 
+          set name = '$name', username = '$username', status = '$status', roleId = '$role', updateDt = '$updateDt' 
+          where username = '$currentUsername'";
+      $response = $this->db->query($query);
+
+      if($usernameSession === $currentUsername) {
+        $newUserData = [
+          'name' => $name,
+          'username' => $username,
+          'userStatus' => $status == '01' ? 'Active' : 'Unactive',
+          'roleUser' => $role,
+          'loginStatus' => ($usernameSession === $username) && ($userStatusSession === $status),
+        ];
+        $this->session->set_userdata($newUserData);
+      }
+
+      if($response) {
+        return [
+          'code' => 200,
+          'status' => 'success',
+          'message' => 'Data user has been updated'
+        ];
+      }
     }
 }

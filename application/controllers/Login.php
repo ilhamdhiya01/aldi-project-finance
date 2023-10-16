@@ -14,7 +14,7 @@ class Login extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('auth/login');
+		$this->load->view('auth/index');
 	}
 
   public function loginProcess()
@@ -33,7 +33,7 @@ class Login extends CI_Controller {
       exit();
     }
 
-    if($user['password'] != $password) {
+    if(!password_verify($password, $user['password'])) {
       $response = [
         'loginStatus' => false,
         'message' => 'Password yang anda masukan salah',
@@ -42,10 +42,19 @@ class Login extends CI_Controller {
       exit();
     }
 
-    if($user['username'] == $username && $user['password'] == $password) {
-      // set session
+    if($user['userStatus'] == 'Unactive') {
+      $response = [
+        'loginStatus' => false,
+        'message' => 'Akun tidak aktif',
+      ];
+      echo json_encode($response);
+      exit();
+    }
+
+    if($user['username'] == $username && password_verify($password, $user['password'])) {
       $userData = [
         'name' => $user['name'],
+        'username' => $user['username'],
         'userStatus' => $user['userStatus'],
         'roleUser' => $user['roleUser'],
         'loginStatus' => true

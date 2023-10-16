@@ -12,6 +12,7 @@ class UserConfiguration extends CI_Controller {
 		}
     $this->load->model('UserConfiguration_model');
     $this->load->model('Authentication_model');
+    $this->load->helper('custom_helper');
   }
 
 	public function index()
@@ -40,10 +41,11 @@ class UserConfiguration extends CI_Controller {
   public function addUser()
   {
     try {
+      $user = $this->Authentication_model->checkUser($_POST['username']);
       $inputValidation = [
-        'required' => $this->validateInputRequired($_POST),
-        'minLengthPassword' => $this->validateMinLengthPassword($_POST['password']),
-        'uniqueUsername' => $this->validateUniqueEmail($_POST['username'])
+        'required' => validateInputRequired($_POST),
+        'minLengthPassword' => validateMinLengthPassword($_POST['password']),
+        'uniqueUsername' => validateUniqueEmail($_POST['username'],  $user)
       ];
 
       if(is_null($inputValidation['required']) && is_null($inputValidation['minLengthPassword']) && is_null($inputValidation['uniqueUsername'])) {
@@ -60,12 +62,11 @@ class UserConfiguration extends CI_Controller {
   public function updateUser()
   {
     try {
-      $user = $this->Authentication_model->checkUser($_POST['username']);
       $inputValidation = [
-        'uniqueUsername' => $this->validateUniqueEmail($_POST['username'])
+        'required' => validateInputRequired($_POST)
       ];
-      if(is_null($inputValidation['uniqueUsername'])) {
-        $response = $this->UserConfiguration_model->update($user);
+      if(is_null($inputValidation['required'])) {
+        $response = $this->UserConfiguration_model->update();
         echo json_encode($response);
       } else {
         echo json_encode($inputValidation);
@@ -94,40 +95,6 @@ class UserConfiguration extends CI_Controller {
       echo json_encode($response);
     } catch (\Throwable $th) {
       throw new Exception($th);
-    }
-  }
-
-  
-
-  public function validateInputRequired($request) {
-    if(strlen($request['name']) == 0){
-      // return ['name' => 'Name must be filled in'];
-      return ['name' => 'name','message' => 'Name must be filled in'];
-    }
-    if(strlen($request['username']) == 0){
-      return ['name' => 'username','message' => 'Username must be filled in'];
-    }
-    if(strlen($request['password']) == 0){
-      return ['name' => 'password','message' => 'Password must be filled in'];
-    }
-    if(strlen($request['role']) == 0){
-      return ['name' => 'role','message' => 'Role must be filled in'];
-    }
-    if(strlen($request['status']) == 0){
-      return ['name' => 'status','message' => 'Status must be filled in'];
-    }
-  }
-
-  public function validateMinLengthPassword($request) {
-    if(strlen($request) <= 8) {
-      return 'Password must be at least 8 characters';
-    }
-  }
-
-  public function validateUniqueEmail($username) {
-    $user = $this->Authentication_model->checkUser($username);
-    if(!is_null($user)) {
-      return 'Username already exist';
     }
   }
 }

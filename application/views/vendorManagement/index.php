@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Konfigurasi User</h1>
+          <h1 class="m-0">Management Vendor</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -26,9 +26,9 @@
             <div class="card-body p-0">
               <div class="table-responsive p-3">
                 <div class="d-flex justify-content-end mb-3">
-                  <button class="btn btn-primary btn-sm <?= $this->session->userdata('roleUser') == 'Admin' ? 'd-none' : '' ?>" data-toggle="modal" data-target="#modalAddUser">Tambah User</button>
+                  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalAddVendor">Tambah Vendor</button>
                 </div>
-                <div id="listUser">
+                <div id="listVendor">
                 </div>
               </div>
             </div>
@@ -38,6 +38,6 @@
     </div>
   </section>
 </div>
-<?php require('modals/formAddUser.php'); ?>
-<?php require('modals/formUpdateUser.php'); ?>
-<?php require('js/userConfiguration.php'); ?>
+<?php require('modals/formAddVendor.php'); ?>
+<?php require('modals/formUpdateVendor.php'); ?>
+<?php require('js/vendorManagement.php'); ?>

@@ -86,7 +86,7 @@
           toastr.success(message);
           setTimeout(() => {
             window.location.href = '<?= base_url('dashboard') ?>';
-          }, 2500);
+          }, 1000);
         }
       }
     })

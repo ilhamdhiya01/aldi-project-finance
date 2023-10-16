@@ -10,14 +10,15 @@
           </button>
         </div>
         <div class="modal-body">
+            <input type="hidden" id="username">
+            <input type="hidden" id="status">
             <div class="form-group">
               <input type="text" class="form-control form-control-border" id="nameEdit" readonly placeholder="Nama">
             </div>
             <div class="form-group">
               <input type="text" class="form-control form-control-border" id="usernameEdit" readonly placeholder="Username">
             </div>
-            <input type="hidden" class="form-control form-control-border" id="passwordEdit">
-            <div class="form-group">
+            <div class="form-group <?= $this->session->userdata('roleUser') == 'Admin' ? 'd-none' : '' ?>">
               <select disabled class="custom-select form-control-border" id="roleEdit">
                 <option></option>
                 <?php foreach($roles as $role): ?>
