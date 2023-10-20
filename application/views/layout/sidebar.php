@@ -118,15 +118,9 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="./index2.html" class="nav-link">
+              <a href="<?= base_url('vehicleManagement') ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Management Kendaraan</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index3.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Management Pengiriman</p>
               </a>
             </li>
           </ul>
