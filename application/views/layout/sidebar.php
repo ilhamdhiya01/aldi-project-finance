@@ -94,7 +94,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url()?>/dashboard" class="nav-link">
+          <a href="<?= base_url()?>piutang" class="nav-link">
             <i class="nav-icon fas fa-file-invoice-dollar"></i>
             <p>
               Pencatatan Piutang
