@@ -11,35 +11,65 @@ class Piutang_model extends CI_Model
     }
 
     public function receivables() {
-      $query = "select a.referenceNumber, a.debtorName, a.recordDate, a.dueDate, a.initialReceivable as piutangAwal, b.optStatus as status
+      $query = "select a.referenceNumber, a.debtorName, a.recordDate, a.lastPaymentDate, a.currentReceivable as piutangAwal, a.initialReceivable, sum(a.totalReceivable) as total
           from  piutang a
-          inner join tbloption b on b.optDesc = 'PiutangStatus' and a.piutangStatus = b.optCode";
+          group by a.referenceNumber";
+      $data = $this->db->query($query);
+      return $data->result_array();
+    }
+
+    public function cicilan($referenceNumber) {
+      $query = "select a.referenceNumber, a.debtorName, a.recordDate, a.totalReceivable as cicilan
+          from  piutang a where a.referenceNumber = '$referenceNumber' and a.initialReceivable is null";
       $data = $this->db->query($query);
       return $data->result_array();
     }
 
     public function store($request) {
-      $name = $request['name'];
-      $username = $request['username'];
-      $password = password_hash($request['password'], PASSWORD_DEFAULT);
-      $status = $request['status'];
-      $role = $request['role'];
+      $referenceNumber = $request['referenceNumber'];
+      $debtorName = $request['debtorName'];
+      $recordDate = $request['recordDate'];
+      $dueDate = $request['dueDate'];
+      $initialReceivable = $request['initialReceivable'];
       $createDt = date('YmdHis');
 
-      $query = "insert into users (name, username, password, status, roleId, createDt) values ('$name', '$username', '$password', '$status', '$role', '$createDt')";
+      $query = "insert into piutang (referenceNumber, debtorName, recordDate, dueDate, currentReceivable, initialReceivable, createdDate) values ('$referenceNumber', '$debtorName', '$recordDate', '$dueDate', $initialReceivable, $initialReceivable, '$createDt' )";
       $response = $this->db->query($query);
       if($response) {
         return [
           'code' => 200,
           'status' => 'success',
-          'message' => 'Create user has been successfully'
+          'message' => 'Create piutang has been successfully'
+        ];
+      }
+    }
+    public function storeCicilan($request) {
+      $referenceNumber = $request['referenceNumber'];
+      $debtorName = $request['debtorName'];
+      $recordDate = $request['recordDate'];
+      $totalReceivable = $request['totalReceivable'];
+      $createDt = date('YmdHis');
+
+      $query1 = "insert into piutang (referenceNumber, debtorName, recordDate, totalReceivable, createdDate) values ('$referenceNumber', '$debtorName', '$recordDate', $totalReceivable, '$createDt' )";
+      $response = $this->db->query($query1);
+
+      $query2 = "update piutang 
+        set currentReceivable = (select currentReceivable from piutang where referenceNumber = '$referenceNumber' and currentReceivable is not null) - $totalReceivable, lastPaymentDate = '$recordDate', updatedDate = '$recordDate'
+        where referenceNumber = '$referenceNumber' and currentReceivable is not null";
+      $this->db->query($query2);
+
+      if($response) {
+        return [
+          'code' => 200,
+          'status' => 'success',
+          'message' => 'Create cicilan has been successfully'
         ];
       }
     }
 
-    public function detail($username)
+    public function detail($referenceNumber)
     {
-      $query = "select name, username, status, roleId from users where username = '$username'";
+      $query = "select referenceNumber, debtorName from piutang where referenceNumber = '$referenceNumber'";
       $data = $this->db->query($query);
       return $data->row_array();
     }

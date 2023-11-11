@@ -26,7 +26,7 @@
             <div class="card-body p-0">
               <div class="table-responsive p-3">
                 <div class="d-flex justify-content-end mb-3">
-                  <button class="btn btn-primary btn-sm <?= $this->session->userdata('roleUser') == 'Admin' ? 'd-none' : '' ?>" data-toggle="modal" data-target="#modalAddUser">Tambah User</button>
+                  <button class="btn btn-primary btn-sm <?= $this->session->userdata('roleUser') == 'Admin' ? 'd-none' : '' ?>" onclick="generateReferenceNumber()" data-toggle="modal" data-target="#modalAddPiutang">Tambah Piutang</button>
                 </div>
                 <div id="listReceivables">
                 </div>
@@ -38,4 +38,7 @@
     </div>
   </section>
 </div>
+<?php require('modals/formAddPiutang.php'); ?>
+<?php require('modals/formAddCicilanPiutang.php'); ?>
+<?php require('modals/formUpdatePiutang.php'); ?>
 <?php require('js/piutang.php'); ?>

@@ -20,6 +20,8 @@ class Piutang extends CI_Controller {
     $data = [
       'status' => $this->Piutang_model->status()
     ];
+    // echo json_encode($this->Piutang_model->receivables());
+    // exit();
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
 		$this->load->view('layout/sidebar');
@@ -37,22 +39,32 @@ class Piutang extends CI_Controller {
     }
   }
 
-  public function addUser()
+  public function showCicilan() 
+  {
+    $referenceNumber = $_GET['referenceNumber'];
+    try {
+      $cicilan = $this->Piutang_model->cicilan($referenceNumber);
+      echo json_encode($cicilan);
+    } catch (\Throwable $th) {
+      echo json_encode($th);
+    }
+  }
+
+  public function addPiutang()
   {
     try {
-      $user = $this->Authentication_model->checkUser($_POST['username']);
-      $inputValidation = [
-        'required' => validateInputRequired($_POST),
-        'minLengthPassword' => validateMinLengthPassword($_POST['password']),
-        'uniqueUsername' => validateUniqueEmail($_POST['username'],  $user)
-      ];
+      $response = $this->Piutang_model->store($_POST);
+      echo json_encode($response);
+    } catch (\Throwable $th) {
+      echo json_encode($th);
+    }
+  }
 
-      if(is_null($inputValidation['required']) && is_null($inputValidation['minLengthPassword']) && is_null($inputValidation['uniqueUsername'])) {
-        $response = $this->Piutang_model->store($_POST);
-        echo json_encode($response);
-      } else {
-        echo json_encode($inputValidation);
-      }
+  public function addCicilan()
+  {
+    try {
+      $response = $this->Piutang_model->storeCicilan($_POST);
+      echo json_encode($response);
     } catch (\Throwable $th) {
       echo json_encode($th);
     }
@@ -75,11 +87,11 @@ class Piutang extends CI_Controller {
     }
   }
 
-  public function userDetail()
+  public function piutangDetail()
   {
     try {
-      $username = $_GET['username'];
-      $response = $this->Piutang_model->detail($username);
+      $referenceNumber = $_GET['referenceNumber'];
+      $response = $this->Piutang_model->detail($referenceNumber);
       echo json_encode($response);
     } catch (\Throwable $th) {
       throw new Exception($th);
