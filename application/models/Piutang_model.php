@@ -19,7 +19,7 @@ class Piutang_model extends CI_Model
     }
 
     public function cicilan($referenceNumber) {
-      $query = "select a.referenceNumber, a.debtorName, a.recordDate, a.totalReceivable as cicilan
+      $query = "select a.id, a.referenceNumber, a.debtorName, a.recordDate, a.totalReceivable as cicilan
           from  piutang a where a.referenceNumber = '$referenceNumber' and a.initialReceivable is null";
       $data = $this->db->query($query);
       return $data->result_array();
@@ -69,55 +69,60 @@ class Piutang_model extends CI_Model
 
     public function detail($referenceNumber)
     {
-      $query = "select referenceNumber, debtorName from piutang where referenceNumber = '$referenceNumber'";
+      $query = "select referenceNumber, debtorName, recordDate, dueDate, initialReceivable from piutang where referenceNumber = '$referenceNumber' and currentReceivable is not null";
       $data = $this->db->query($query);
       return $data->row_array();
     }
 
-    public function destroy($username) 
+    public function destroy($referenceNumber) 
     {
-      $query = "delete from users where username = '$username'";
+      $query = "delete from piutang where referenceNumber = '$referenceNumber'";
       $response = $this->db->query($query);
       if($response) {
         return [
           'status' => 'success',
-          'message' => $username . ' has been deleted'
+          'message' => 'Piutang data has been deleted'
+        ];
+      }
+    }
+
+    public function destroyCicilan($id, $referenceNumber) 
+    {
+      $query2 = "update piutang 
+          set currentReceivable = (select currentReceivable from piutang where referenceNumber = '$referenceNumber' and currentReceivable is not null) + (select totalReceivable from piutang where id = '$id') 
+          where referenceNumber = '$referenceNumber' and currentReceivable is not null";
+      $this->db->query($query2);
+
+      $query1 = "delete from piutang where id = '$id'";
+      $response = $this->db->query($query1);
+
+      if($response) {
+        return [
+          'status' => 'success',
+          'message' => 'Cicilan has been deleted'
         ];
       }
     }
 
     public function update() 
     {
-      $name = $_POST['name'];
-      $username = $_POST['username'];
-      $usernameSession = $this->session->userdata('username');
-      $userStatusSession = $this->session->userdata('userStatus') == 'Active' ? '01' : '02';
-      $currentUsername = $_POST['currentUsername'];
-      $status = $_POST['status'];
-      $role = $_POST['role'];
+      $referenceNumber = $_POST['referenceNumber'];
+      $debtorName = $_POST['debtorName'];
+      $recordDate = $_POST['recordDate'];
+      $dueDate = $_POST['dueDate'];
+      $initialReceivable = $_POST['initialReceivable'];
       $updateDt = date('YmdHis');
 
-      $query = "update users 
-          set name = '$name', username = '$username', status = '$status', roleId = '$role', updateDt = '$updateDt' 
-          where username = '$currentUsername'";
+      $query = "update piutang 
+          set referenceNumber = '$referenceNumber', debtorName = '$debtorName', recordDate = '$recordDate', dueDate = '$dueDate', initialReceivable = $initialReceivable, updatedDate = ' $updateDt' 
+          where referenceNumber = '$referenceNumber' and currentReceivable is not null";
       $response = $this->db->query($query);
-
-      if($usernameSession === $currentUsername) {
-        $newUserData = [
-          'name' => $name,
-          'username' => $username,
-          'userStatus' => $status == '01' ? 'Active' : 'Unactive',
-          'roleUser' => $role,
-          'loginStatus' => ($usernameSession === $username) && ($userStatusSession === $status),
-        ];
-        $this->session->set_userdata($newUserData);
-      }
 
       if($response) {
         return [
           'code' => 200,
           'status' => 'success',
-          'message' => 'Data user has been updated'
+          'message' => 'Data piutang has been updated'
         ];
       }
     }

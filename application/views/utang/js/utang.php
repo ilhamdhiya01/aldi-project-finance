@@ -1,12 +1,12 @@
 <script>
   $(document).ready(function() {
-    showReceivables();
+    showDebt();
   });
 
   const showCicilan = (referenceNumber) => {
     $('#recordCicilan').html('');
     $.ajax({
-      url: '<?= base_url('piutang/showCicilan') ?>',
+      url: '<?= base_url('utang/showCicilan') ?>',
       data: {
         referenceNumber: referenceNumber != null ? referenceNumber : $('#referenceNumberDetail').val(),
       },
@@ -45,7 +45,7 @@
   }
 
 
-  const showReceivables = () => {
+  const showDebt = () => {
     const today = new Date();
 
     // Mendapatkan tahun, bulan, dan tanggal
@@ -53,15 +53,15 @@
     const month = String(today.getMonth() + 1).padStart(2, '0');  // Bulan dimulai dari 0, sehingga ditambah 1
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    $('#listReceivables').html('');
+    $('#listDebt').html('');
     $.ajax({
-      url: '<?= base_url('piutang/showReceivables') ?>',
+      url: '<?= base_url('utang/showDebt') ?>',
       type: 'GET',
       success: function(data) {
         try {
-          const receivables = JSON.parse(data);
-          if(receivables.length == 0) {
-            $('#listReceivables').append(`
+          const debt = JSON.parse(data);
+          if(debt.length == 0) {
+            $('#listDebt').append(`
               <div class="card p-3 d-flex flex-md-row justify-content-between text-sm">
                 <div class="d-flex justify-content-center align-items-center w-100" style="height: 150px;">
                   <h4>No data yet</h4>
@@ -71,38 +71,38 @@
             return;
           }
 
-          receivables.map((receivable) => {
-            $('#listReceivables').append(`
+          debt.map((item) => {
+            $('#listDebt').append(`
               <div class="card p-3 d-flex flex-md-row align-items-center">
                 <div class="row w-100">
                   <div class="col-md-2 d-flex flex-md-column text-sm">
                     <span class=" font-weight-light">Nomor Referensi</span>
-                    <span class="">${receivable.referenceNumber}</span>
+                    <span class="">${item.referenceNumber}</span>
                   </div>
                   <div class="col-md-2 d-flex flex-md-column text-sm">
-                    <span class=" font-weight-light">Debitur</span>
-                    <span class="">${receivable.debtorName}</span>
+                    <span class=" font-weight-light">Kreditur</span>
+                    <span class="">${item.creditorName}</span>
                   </div>
                   <div class="col-md-2 d-flex flex-md-column text-sm">
                     <span class=" font-weight-light">Tanggal Pencatatan</span>
-                    <span class="">${receivable.recordDate}</span>
+                    <span class="">${item.recordDate}</span>
                   </div>
                   <div class="col-md-2 d-flex flex-md-column text-sm">
                     <span class=" font-weight-light">Terakhir Dibayarkan</span>
-                    <span class="">${receivable.lastPaymentDate}</span>
+                    <span class="">${item.lastPaymentDate}</span>
                   </div>
                   <div class="col-md-2 d-flex flex-md-column text-sm">
-                    <span class=" font-weight-light">Piutang Awal</span>
-                    <span class="">${formatRupiah(receivable.piutangAwal)}</span>
+                    <span class=" font-weight-light">Utang Awal</span>
+                    <span class="">${formatRupiah(item.utangAwal)}</span>
                   </div>
                   <div class="col-2 d-flex flex-md-column">
                     <span class=" font-weight-light">Status</span>
-                    <span style="width: 90px;" class="badge ${receivable.lastPaymentDate == null ? 'badge-warning' : formattedDate > receivable.lastPaymentDate  ? 'badge-danger' : formattedDate >= receivable.lastPaymentDate  ? 'badge-warning' : 'badge-success'}">${receivable.lastPaymentDate == null || formattedDate == receivable.lastPaymentDate ? 'Jatuh tempo' : formattedDate > receivable.lastPaymentDate  ? 'Terlambat' : 'Sudah terbayar'}</span>
+                    <span style="width: 90px;" class="badge ${item.lastPaymentDate == null ? 'badge-warning' : formattedDate > item.lastPaymentDate  ? 'badge-danger' : formattedDate >= item.lastPaymentDate  ? 'badge-warning' : 'badge-success'}">${item.lastPaymentDate == null || formattedDate == item.lastPaymentDate ? 'Jatuh tempo' : formattedDate > item.lastPaymentDate  ? 'Terlambat' : 'Sudah terbayar'}</span>
                   </div>
                 </div>
                 <div class="d-flex flex-row align-items-center" style="column-gap: 5px;">
-                <button onclick="handleDetailPiutang(\``+receivable.referenceNumber+`\`, 'detail')" data-toggle="modal" data-target="#modalUpdatePiutang" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Detail</button>
-                ${receivable.total != receivable.initialReceivable ? `<button onclick="handleDetailPiutang(\``+receivable.referenceNumber+`\`, 'cicilan')" data-toggle="modal" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Cicilan</button>` : '<span class="badge badge-success">Lunas</span>'}
+                <button onclick="handleDetailUtang(\``+item.referenceNumber+`\`, 'detail')" data-toggle="modal" data-target="#modalUpdateUtang" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Detail</button>
+                ${item.total != item.initialDebt ? `<button onclick="handleDetailUtang(\``+item.referenceNumber+`\`, 'cicilan')" data-toggle="modal" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Cicilan</button>` : '<span class="badge badge-success">Lunas</span>'}
                 </div>
               </div>
             `);
@@ -114,28 +114,28 @@
     })
   }
 
-  const handleAddPiutang = (e) => {
+  const handleAddUtang = (e) => {
     e.preventDefault();
-    $('#button-add-piutang').prop('disabled', true);
+    $('#button-add-utang').prop('disabled', true);
     $.ajax({
-      url: '<?= base_url('piutang/addPiutang') ?>',
+      url: '<?= base_url('utang/addUtang') ?>',
       type: 'POST',
       data: {
         referenceNumber: $('#referenceNumberAdd').val(),
-        debtorName: $('#debtorNameAdd').val(),
+        creditorName: $('#creditorNameAdd').val(),
         recordDate: $('#recordDateAdd').val(),
         dueDate: $('#dueDateAdd').val(),
-        initialReceivable: $('#initialReceivableAdd').val()
+        initialDebt: $('#initialDebtAdd').val()
       },
       success: function(data) {
-        $('#button-add-piutang').prop('disabled', false);
+        $('#button-add-utang').prop('disabled', false);
         const response = JSON.parse(data);
 
         if(response.code == 200 && response.status == 'success') {
           toastr.success(response.message);
-          showReceivables();
-          $('#modalAddPiutang').modal('hide');
-          $('#formAddPiutang')[0].reset();
+          showDebt();
+          $('#modalAddUtang').modal('hide');
+          $('#formAddUtang')[0].reset();
         }
       }
     })
@@ -143,24 +143,24 @@
 
   const handleAddCicilan = (e) => {
     e.preventDefault();
-    $('#button-add-cicilan').prop('disabled', true);
+    $('#button-add-cicilan-utang').prop('disabled', true);
     $.ajax({
-      url: '<?= base_url('piutang/addCicilan') ?>',
+      url: '<?= base_url('utang/addCicilan') ?>',
       type: 'POST',
       data: {
         referenceNumber: $('#referenceNumberDetail').val(),
-        debtorName: $('#debtorNameDetail').val(),
+        creditorName: $('#creditorNameDetail').val(),
         recordDate: $('#recordDateDetail').val(),
-        totalReceivable: $('#totalReceivableDetail').val()
+        totalDebt: $('#totalDebtDetail').val()
       },
       success: function(data) {
-        $('#button-add-cicilan').prop('disabled', false);
+        $('#button-add-cicilan-utang').prop('disabled', false);
         const response = JSON.parse(data);
 
         if(response.code == 200 && response.status == 'success') {
           toastr.success(response.message);
           showCicilan();
-          showReceivables();
+          showDebt();
           $('#modal-lg').modal('hide');
           $('#formAddCicilan')[0].reset();
         }
@@ -169,41 +169,41 @@
   }
 
 
-  const handleDetailPiutang = (referenceNumber, type) => {
+  const handleDetailUtang = (referenceNumber, type) => {
     if(type === 'detail') {
       // change button
-      $('#button-edit-piutang').removeClass('d-none');
-      $('#button-update-piutang').addClass('d-none');
-      $('#button-delete-piutang').removeClass('d-none');
+      $('#button-edit-utang').removeClass('d-none');
+      $('#button-update-utang').addClass('d-none');
+      $('#button-delete-utang').removeClass('d-none');
       $('#button-cancel').addClass('d-none');
       // unreadonlu
       $('#referenceNumberEdit').prop('readonly', true);
-      $('#debtorNameEdit').prop('readonly', true);
+      $('#creditorNameEdit').prop('readonly', true);
       $('#recordDateEdit').prop('disabled', true)
       $('#dueDateEdit').prop('disabled', true)
-      $('#initialReceivableEdit').prop('readonly', true)
+      $('#initialDebtEdit').prop('readonly', true)
     }
 
     $.ajax({
-      url: '<?= base_url('piutang/piutangDetail') ?>',
+      url: '<?= base_url('utang/utangDetail') ?>',
       type: 'GET',
       data: {
         referenceNumber: referenceNumber
       },
       success: function(data) {
-        const {referenceNumber, debtorName, recordDate, dueDate, initialReceivable } = JSON.parse(data);
+        const {referenceNumber, creditorName, recordDate, dueDate, initialDebt } = JSON.parse(data);
         if(type !== 'detail') {
           $('#referenceNumberDetail').val(referenceNumber);
-          $('#debtorNameDetail').val(debtorName);
+          $('#creditorNameDetail').val(creditorName);
           showCicilan(referenceNumber);
         }
 
         if(type === 'detail') {
           $('#referenceNumberEdit').val(referenceNumber);
-          $('#debtorNameEdit').val(debtorName);
+          $('#creditorNameEdit').val(creditorName);
           $('#recordDateEdit').val(recordDate)
           $('#dueDateEdit').val(dueDate)
-          $('#initialReceivableEdit').val(initialReceivable)
+          $('#initialDebtEdit').val(initialDebt)
         }
       }
     })
@@ -212,7 +212,7 @@
   const handleDeleteCicilan = (id, referenceNumber) => {
     if(confirm('Delete cicilan ini ?')) {
       $.ajax({
-        url: '<?= base_url('piutang/deleteCicilan') ?>',
+        url: '<?= base_url('utang/deleteCicilan') ?>',
         type: 'GET',
         data: {
           id: id,
@@ -223,43 +223,43 @@
           if(status == 'success') {
             toastr.success(message);
             showCicilan(referenceNumber);
-            showReceivables();
+            showDebt();
           }
         }
       });
     }
   }
 
-  const handleUpdatePiutang = (e) => {
+  const handleUpdateUtang = (e) => {
     e.preventDefault();
-    $('#button-update-piutang').prop('disabled', true);
+    $('#button-update-utang').prop('disabled', true);
     $.ajax({
-      url: '<?= base_url('piutang/updatePiutang') ?>',
+      url: '<?= base_url('utang/updateUtang') ?>',
       type: 'POST',
       data: {
         referenceNumber: $('#referenceNumberEdit').val(),
-        debtorName: $('#debtorNameEdit').val(),
+        creditorName: $('#creditorNameEdit').val(),
         recordDate: $('#recordDateEdit').val(),
         dueDate: $('#dueDateEdit').val(),
-        initialReceivable: $('#initialReceivableEdit').val()
+        initialDebt: $('#initialDebtEdit').val()
       },
       success: function(data) {
-        $('#button-update-piutang').prop('disabled', false);
+        $('#button-update-utang').prop('disabled', false);
         const response = JSON.parse(data);
 
         if(response.code == 200 && response.status == 'success') {
           toastr.success(response.message);
-          showReceivables();
-          $('#modalUpdatePiutang').modal('hide');
-          $('#formUpdatePiutang')[0].reset();
+          showDebt();
+          $('#modalUpdateUtang').modal('hide');
+          $('#formUpdateUtang')[0].reset();
         }
       }
     })
   }
 
-  const handleDeletelPiutang = (referenceNumber) => {
+  const handleDeletelUtang = (referenceNumber) => {
     $.ajax({
-      url: '<?= base_url('piutang/deletePiutang') ?>',
+      url: '<?= base_url('utang/deleteUtang') ?>',
       type: 'GET',
       data: {
         referenceNumber: referenceNumber
@@ -268,8 +268,8 @@
         const {status, message} = JSON.parse(data);
         if(status == 'success') {
           toastr.success(message);
-          showReceivables();
-          $('#modalUpdatePiutang').modal('hide');
+          showDebt();
+          $('#modalUpdateUtang').modal('hide');
         }
       }
     })
@@ -279,36 +279,36 @@
     switch (type) {
       case 'edit':
         // change button
-        $('#button-edit-piutang').addClass('d-none');
-        $('#button-update-piutang').removeClass('d-none');
-        $('#button-delete-piutang').addClass('d-none');
+        $('#button-edit-utang').addClass('d-none');
+        $('#button-update-utang').removeClass('d-none');
+        $('#button-delete-utang').addClass('d-none');
         $('#button-cancel').removeClass('d-none');
         // unreadonlu
         $('#referenceNumberEdit').prop('readonly', false);
-        $('#debtorNameEdit').prop('readonly', false);
+        $('#creditorNameEdit').prop('readonly', false);
         $('#recordDateEdit').prop('disabled', false)
         $('#dueDateEdit').prop('disabled', false)
-        $('#initialReceivableEdit').prop('readonly', false)
+        $('#initialDebtEdit').prop('readonly', false)
         break;
       case 'delete':
         const referenceNumber = $('#referenceNumberEdit').val();
         const confirmDelete = confirm(`Hapus data ini ?`) ;
         if(confirmDelete) {
-          handleDeletelPiutang(referenceNumber);
+          handleDeletelUtang(referenceNumber);
         }
         break;
       default:
         // change button
-        $('#button-edit-piutang').removeClass('d-none');
-        $('#button-update-piutang').addClass('d-none');
-        $('#button-delete-piutang').removeClass('d-none');
+        $('#button-edit-utang').removeClass('d-none');
+        $('#button-update-utang').addClass('d-none');
+        $('#button-delete-Utang').removeClass('d-none');
         $('#button-cancel').addClass('d-none');
         // unreadonlu
         $('#referenceNumberEdit').prop('readonly', true);
-        $('#debtorNameEdit').prop('readonly', true);
+        $('#creditorNameEdit').prop('readonly', true);
         $('#recordDateEdit').prop('disabled', true)
         $('#dueDateEdit').prop('disabled', true)
-        $('#initialReceivableEdit').prop('readonly', true)
+        $('#initialDebtEdit').prop('readonly', true)
         break;
     }
   }
@@ -328,7 +328,7 @@
     const randomValue = Math.floor(Math.random() * 1000); // Nilai acak antara 0 dan 1000
 
     // Menggabungkan hasilnya
-    const referenceNumber = `#PIU${year}${month}${day}${randomValue}`;
+    const referenceNumber = `#UTG${year}${month}${day}${randomValue}`;
     $('#referenceNumberAdd').val(referenceNumber);
   }
 

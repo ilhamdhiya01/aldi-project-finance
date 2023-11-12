@@ -1,10 +1,10 @@
 <!-- Modal -->
-<div class="modal fade" id="modalUpdatePiutang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="modalUpdateUtang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <form onsubmit="handleUpdatePiutang(event)" id="formUpdatePiutang">
+      <form onsubmit="handleUpdateUtang(event)" id="formUpdateUtang">
         <div class="modal-header">
-          <h5 class="modal-title" id="titleFormUpdateUser">Form Detail Piutang</h5>
+          <h5 class="modal-title" id="titleFormUpdateUser">Form Detail Utang</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -15,8 +15,8 @@
             <input type="text" readonly class="form-control" id="referenceNumberEdit">
           </div>
           <div class="form-group">
-            <label for="exampleInputEmail1">Nama Debitur</label>
-            <input type="text" readonly required class="form-control" id="debtorNameEdit">
+            <label for="exampleInputEmail1">Nama Kreditur</label>
+            <input type="text" readonly required class="form-control" id="creditorNameEdit">
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Tanggal Pencatatan</label>
@@ -27,19 +27,19 @@
             <input type="date" disabled required class="form-control" id="dueDateEdit">
           </div>
           <div class="form-group">
-            <label for="exampleInputEmail1">Total Piutang</label>
-            <input type="number" readonly required class="form-control" id="initialReceivableEdit">
+            <label for="exampleInputEmail1">Total Utang</label>
+            <input type="number" readonly required class="form-control" id="initialDebtEdit">
           </div>     
         </div>
         <div class="modal-footer">
           <div class="row w-100">
             <div class="col-6">
-              <button type="button" id="button-delete-piutang" onclick="handleButtonFormDetail('delete')"  class="btn btn-danger btn-block">Hapus Piutang</button>
+              <button type="button" id="button-delete-utang" onclick="handleButtonFormDetail('delete')"  class="btn btn-danger btn-block">Hapus Utang</button>
               <button type="button" id="button-cancel" onclick="handleButtonFormDetail('cancel')" class="btn btn-warning btn-block d-none">Batal</button>
             </div>
             <div class="col-6">
-              <button type="button" id="button-edit-piutang" onclick="handleButtonFormDetail('edit')" class="btn btn-primary btn-block">Edit Piutang</button>
-              <button type="submit" id="button-update-piutang" class="btn btn-success btn-block d-none">Simpan Perubahan</button>
+              <button type="button" id="button-edit-utang" onclick="handleButtonFormDetail('edit')" class="btn btn-primary btn-block">Edit Utang</button>
+              <button type="submit" id="button-update-utang" class="btn btn-success btn-block d-none">Simpan Perubahan</button>
             </div>
           </div>
         </div>

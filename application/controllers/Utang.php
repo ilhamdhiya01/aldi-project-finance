@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Piutang extends CI_Controller {
+class Utang extends CI_Controller {
   
   public function __construct()
   {
@@ -10,7 +10,7 @@ class Piutang extends CI_Controller {
 		if(!$this->session->userdata('loginStatus')) {
 			redirect('login');
 		}
-    $this->load->model('Piutang_model');
+    $this->load->model('Utang_model');
     $this->load->model('Authentication_model');
     $this->load->helper('custom_helper');
   }
@@ -18,22 +18,22 @@ class Piutang extends CI_Controller {
 	public function index()
 	{
     $data = [
-      'status' => $this->Piutang_model->status()
+      'status' => $this->Utang_model->status()
     ];
-    // echo json_encode($this->Piutang_model->receivables());
+    // echo json_encode($this->Utang_model->receivables());
     // exit();
 		$this->load->view('layout/header');
 		$this->load->view('layout/navbar');
 		$this->load->view('layout/sidebar');
-		$this->load->view('piutang/index', $data);
+		$this->load->view('utang/index');
 		$this->load->view('layout/footer');
 	}
 
-  public function showReceivables() 
+  public function showDebt() 
   {
     try {
-      $receivables = $this->Piutang_model->receivables();
-      echo json_encode($receivables);
+      $debt = $this->Utang_model->debt();
+      echo json_encode($debt);
     } catch (\Throwable $th) {
       echo json_encode($th);
     }
@@ -43,17 +43,17 @@ class Piutang extends CI_Controller {
   {
     $referenceNumber = $_GET['referenceNumber'];
     try {
-      $cicilan = $this->Piutang_model->cicilan($referenceNumber);
+      $cicilan = $this->Utang_model->cicilan($referenceNumber);
       echo json_encode($cicilan);
     } catch (\Throwable $th) {
       echo json_encode($th);
     }
   }
 
-  public function addPiutang()
+  public function addUtang()
   {
     try {
-      $response = $this->Piutang_model->store($_POST);
+      $response = $this->Utang_model->store($_POST);
       echo json_encode($response);
     } catch (\Throwable $th) {
       echo json_encode($th);
@@ -63,39 +63,39 @@ class Piutang extends CI_Controller {
   public function addCicilan()
   {
     try {
-      $response = $this->Piutang_model->storeCicilan($_POST);
+      $response = $this->Utang_model->storeCicilan($_POST);
       echo json_encode($response);
     } catch (\Throwable $th) {
       echo json_encode($th);
     }
   }
 
-  public function updatePiutang()
+  public function updateUtang()
   {
     try {
-      $response = $this->Piutang_model->update();
+      $response = $this->Utang_model->update();
       echo json_encode($response);
     } catch (\Throwable $th) {
       throw new Exception($th);
     }
   }
 
-  public function piutangDetail()
+  public function utangDetail()
   {
     try {
       $referenceNumber = $_GET['referenceNumber'];
-      $response = $this->Piutang_model->detail($referenceNumber);
+      $response = $this->Utang_model->detail($referenceNumber);
       echo json_encode($response);
     } catch (\Throwable $th) {
       throw new Exception($th);
     }
   }
 
-  public function deletePiutang()
+  public function deleteUtang()
   {
     try {
       $referenceNumber = $_GET['referenceNumber'];
-      $response = $this->Piutang_model->destroy($referenceNumber);
+      $response = $this->Utang_model->destroy($referenceNumber);
       echo json_encode($response);
     } catch (\Throwable $th) {
       throw new Exception($th);
@@ -107,7 +107,7 @@ class Piutang extends CI_Controller {
     try {
       $id = $_GET['id'];
       $referenceNumber = $_GET['referenceNumber'];
-      $response = $this->Piutang_model->destroyCicilan($id, $referenceNumber);
+      $response = $this->Utang_model->destroyCicilan($id, $referenceNumber);
       echo json_encode($response);
     } catch (\Throwable $th) {
       throw new Exception($th);
