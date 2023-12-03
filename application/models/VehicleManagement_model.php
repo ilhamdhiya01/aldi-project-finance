@@ -1,6 +1,14 @@
 <?php
 class VehicleManagement_model extends CI_Model
 {
+    public function activeVehicle() 
+    {
+      $query = "select *
+      from  vehicles where status = '01'";
+      $data = $this->db->query($query);
+      return $data->result_array();
+    }
+
     public function vehicles() {
       $query = "select a.id, a.type, a.numberPlate, b.optStatus as vehicleStatus, b.optCode, a.lastService, a.serviceAgain
           from  vehicles a

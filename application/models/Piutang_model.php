@@ -58,6 +58,9 @@ class Piutang_model extends CI_Model
         where referenceNumber = '$referenceNumber' and currentReceivable is not null";
       $this->db->query($query2);
 
+      $query3 = "insert into finance (information, recordDate, cashIn, createdDate) values ('Cicilan piutang dari $debtorName', '$recordDate',  $totalReceivable, '$createDt')";
+      $this->db->query($query3);
+
       if($response) {
         return [
           'code' => 200,

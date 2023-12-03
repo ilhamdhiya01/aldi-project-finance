@@ -1,6 +1,15 @@
 <?php
 class VendorManagement_model extends CI_Model
 {
+
+    public function activeVendor() 
+    {
+      $query = "select *
+      from  vendors where vendorStatus = '01'";
+      $data = $this->db->query($query);
+      return $data->result_array();
+    }
+
     public function vendors() {
       $query = "select a.id, a.name, a.phone, b.optStatus as vendorStatus, a.address
           from  vendors a

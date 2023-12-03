@@ -19,6 +19,13 @@ class UserConfiguration_model extends CI_Model
       return $data->result_array();
     }
 
+    public function activeUser() {
+      $query = "select *
+          from  users where status = '01'";
+      $data = $this->db->query($query);
+      return $data->result_array();
+    }
+
     public function users() {
       $query = "select a.name, a.username, b.optStatus as userStatus, c.optStatus as roleUser
           from  users a

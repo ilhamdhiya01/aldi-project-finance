@@ -102,7 +102,7 @@
                 </div>
                 <div class="d-flex flex-row align-items-center" style="column-gap: 5px;">
                 <button onclick="handleDetailPiutang(\``+receivable.referenceNumber+`\`, 'detail')" data-toggle="modal" data-target="#modalUpdatePiutang" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Detail</button>
-                ${receivable.total != receivable.initialReceivable ? `<button onclick="handleDetailPiutang(\``+receivable.referenceNumber+`\`, 'cicilan')" data-toggle="modal" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Cicilan</button>` : '<span class="badge badge-success">Lunas</span>'}
+                ${receivable.total != receivable.initialReceivable ? `<button onclick="handleDetailPiutang(\``+receivable.referenceNumber+`\`, 'cicilan')" data-toggle="modal" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter">Cicilan</button>` : `<span class="badge badge-success">Lunas</span>`}
                 </div>
               </div>
             `);

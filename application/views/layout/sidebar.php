@@ -37,48 +37,19 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-money-check"></i>
             <p>
-              Transaksi
-              <i class="right fas fa-angle-left"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="./index.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Pembelian</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index2.html" class="nav-link active">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Penyewaan</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./index3.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Pengiriman</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-money-check"></i>
-            <p>
               Keuangan
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="./index.html" class="nav-link">
+              <a href="<?= base_url('cashin')?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Pemasukan</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="./index2.html" class="nav-link active">
+              <a href="<?= base_url('cashout')?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Pengeluaran</p>
               </a>
@@ -86,7 +57,7 @@
           </ul>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url()?>/utang" class="nav-link">
+          <a href="<?= base_url('utang')?>" class="nav-link">
             <i class="nav-icon fas fa-file-invoice-dollar"></i>
             <p>
               Pencatatan Utang
@@ -94,7 +65,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="<?= base_url()?>piutang" class="nav-link">
+          <a href="<?= base_url('piutang')?>" class="nav-link">
             <i class="nav-icon fas fa-file-invoice-dollar"></i>
             <p>
               Pencatatan Piutang
